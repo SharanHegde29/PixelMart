@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    
+    body {
+        min-height: 100vh;
+        overflow-x: hidden; 
+    }
+
+       .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+       .table-responsive {
+        border-radius: 10px;
+        overflow: hidden; 
+    }
+    .card {
+        border-radius: 15px !important;
+    }
+    
+    .btn-lg {
+        padding: 12px 20px;
+        font-size: 1.1rem;
+    }
+    @media (max-width: 768px) {
+        h1.display-4 { font-size: 2.5rem; } 
+        .navbar-brand { font-size: 1.5rem; }
+        
+        .badge { font-size: 0.8rem; padding: 0.5em 0.8em; }
+    }
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PixelMart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: white; 
+            min-height: 100vh;
+        }
+        .card { color: black; }
+        .hover-grow { transition: transform 0.2s ease; }
+        .hover-grow:hover { transform: scale(1.05); }
+        .btn { transition: all 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">PixelMart 🤖</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'home' %}">All Products</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'home' %}?category=electronics">Electronics</a></li>
+                            <li><a class="dropdown-item" href="{% url 'home' %}?category=audio">Audio</a></li>
+                            <li><a class="dropdown-item" href="{% url 'home' %}?category=computers">Computers</a></li>
+                            <li><a class="dropdown-item" href="{% url 'home' %}?category=gaming">Gaming</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <form class="d-flex me-auto" action="{% url 'home' %}" method="get">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search gadgets..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">🔍</button>
+                </form>
+
+                <div class="ms-3">
+                    {% if user.is_authenticated %}
+    <span class="text-white me-3">
+        Welcome, <strong>{{ user.username }}</strong>! 
+    </span>
+
+    <a href="{% url 'my_orders' %}" class="btn btn-outline-info btn-sm me-2">📦 My Orders</a>
+    
+    <form action="{% url 'logout' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+    </form>
+{% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary btn-sm me-2">Login</a>
+        <a href="{% url 'signup' %}" class="btn btn-success btn-sm">Sign Up</a>
+    {% endif %}
+</div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+           <div class="container mt-3">
+               {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show animate__animated animate__fadeInDown" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

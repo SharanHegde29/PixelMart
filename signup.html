@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-lg animate__animated animate__fadeInDown">
+            <div class="card-header bg-success text-white text-center">
+                <h4 class="mb-0">Join PixelMart</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger animate__animated animate__shakeX">
+            {% for error in form.non_field_errors %}
+                <div><strong>Oops!</strong> {{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% for field in form %}
+    <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        
+        <script>
+            var inputs = document.querySelectorAll('input');
+            inputs.forEach(i => i.classList.add('form-control'));
+        </script>
+
+        {% if field.help_text %}
+            <small class="text-muted">{{ field.help_text }}</small>
+        {% endif %}
+
+        {% if field.errors %}
+            <div class="alert alert-danger mt-2 py-2 animate__animated animate__fadeIn">
+                {% for error in field.errors %}
+                    <small><i class="bi bi-exclamation-triangle-fill"></i> {{ error }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-success w-100 hover-grow">Sign Up</button>
+  </form>
+            </div>
+            <div class="card-footer text-center">
+                Already have an account? <a href="{% url 'login' %}">Login here</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

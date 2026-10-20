@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+        <div class="card shadow-lg bg-dark text-white border-danger">
+            <div class="card-body p-5">
+                <h2 class="text-danger mb-4"> Are you sure?</h2>
+                <p class="lead">Do you really want to delete <strong>{{ product.name }}</strong>?</p>
+                <p class="text-muted">This action cannot be undone.</p>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <a href="{% url 'home' %}" class="btn btn-secondary me-2">Cancel</a>
+                    <button type="submit" class="btn btn-danger">Yes, Delete it</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

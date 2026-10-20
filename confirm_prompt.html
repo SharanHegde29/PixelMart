@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-lg border-0" style="background: #2c3035; color: white;">
+                
+                {% if order.product.image %}
+                <img src="{{ order.product.image.url }}" class="card-img-top" alt="{{ order.product.name }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+
+                <div class="card-body text-center p-4">
+                    <h3 class="mb-3">Confirm Order?</h3>
+                    <p class="text-muted">You are about to confirm your order for:</p>
+                    
+                    <h4 class="text-info my-3">{{ order.product.name }}</h4>
+                    <h2 class="text-success fw-bold">₹{{ order.product.price }}</h2>
+
+                    <hr class="border-secondary my-4">
+
+                    <p class="small text-white-50">
+                        Clicking "Yes" will finalize your purchase and notify the seller.
+                    </p>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-lg w-100 shadow hover-grow">
+                            ✅ Yes, Confirm Order
+                            </button>
+                        </form>
+
+                        <a href="{% url 'my_orders' %}" class="btn btn-outline-danger w-100">
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

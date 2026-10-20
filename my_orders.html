@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 text-white">
+    <h2 class="mb-4">📦 My Order History</h2>
+
+    {% if orders %}
+        <div class="table-responsive">
+            <table class="table table-dark table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Date Ordered</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {% if order.product.image %}
+                                    <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px; border-radius: 5px;">
+                                {% else %}
+                                    <div style="width: 50px; height: 50px; background: #555; margin-right: 15px; border-radius: 5px;"></div>
+                                {% endif %}
+                                <a href="{% url 'product_detail' order.product.pk %}" class="text-white text-decoration-none">
+                                    {{ order.product.name }}
+                                </a>
+                            </div>
+                        </td>
+                        <td class="align-middle text-success">₹{{ order.product.price }}</td>
+                        <td class="align-middle">{{ order.created_at|date:"M d, Y" }}</td>
+                        
+                        <td class="align-middle">
+                            {% if order.status == 'Confirmed' %}
+                                <span class="badge bg-success">Confirmed ✅</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending ⏳</span>
+                                <small class="d-block text-muted" style="font-size: 0.75rem;">Check your email</small>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="text-center mt-5">
+            <h3>You haven't bought anything yet! 😲</h3>
+            <a href="{% url 'home' %}" class="btn btn-primary mt-3">Go Shopping</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

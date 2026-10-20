@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <div class="card shadow-lg animate__animated animate__fadeInDown">
+            <div class="card-header bg-primary text-white text-center">
+                <h4 class="mb-0">Sign In</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger animate__animated animate__shakeX">
+                            {% for error in form.non_field_errors %}
+                                <div><strong><i class="bi bi-x-circle"></i> Error:</strong> {{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        
+                        <script>
+                            var inputs = document.querySelectorAll('input');
+                            inputs.forEach(i => i.classList.add('form-control'));
+                        </script>
+
+                        {% if field.errors %}
+                            <div class="alert alert-danger mt-2 py-2 animate__animated animate__fadeIn">
+                                {% for error in field.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary w-100 hover-grow">Login to PixelMart</button>
+                </form>
+            </div>
+            <div class="card-footer text-center">
+                Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

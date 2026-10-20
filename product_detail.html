@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+                {% else %}
+                <img src="https://via.placeholder.com/500x500?text=No+Image" class="img-fluid rounded" alt="No Image">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h1 class="fw-bold">{{ product.name }}</h1>
+            <h3 class="text-success fw-bold">${{ product.price }}</h3>
+            <p class="text-muted">Category: <span class="badge bg-secondary">{{ product.category }}</span></p>
+            
+            <hr>
+            
+            <p class="lead">{{ product.description }}</p>
+
+            <div class="mt-4">
+                <p><strong>Availability:</strong> 
+                    {% if product.stock > 0 %}
+                        <span class="text-success">In Stock ({{ product.stock }})</span>
+                    {% else %}
+                        <span class="text-danger">Out of Stock</span>
+                    {% endif %}
+                </p>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'buy_product' product.pk %}" class="btn btn-primary btn-lg w-100 shadow">
+                         🚀 I'm Interested / Buy Now
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg w-100">
+                        Login to Buy
+                    </a>
+                {% endif %}
+            </div>
+            
+            {% if user.is_superuser %}
+            <div class="mt-3">
+                <a href="{% url 'update_product' product.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="{% url 'delete_product' product.pk %}" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
